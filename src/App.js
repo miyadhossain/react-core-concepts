@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react'
 import './App.css';
 
 function App() {
@@ -11,8 +11,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+      <Counter></Counter>
+      <Users></Users>
         {
-          products.map(pro => <Products product={pro}></Products>)
+          products.map(pd => <Products product={pd}></Products>)
         }
         {/* <Products product={products[0]}></Products>
         <Products product={products[1]}></Products>
@@ -43,6 +45,41 @@ function Products(props) {
       <h2>{name}</h2>
       <h1>{price}</h1>
       <button>Buy now</button>
+    </div>
+  )
+}
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  return (
+    <div>
+      <h1>Count: {count}</h1>
+      <button onMouseEnter={()=> setCount(count + 1)}>Increase</button>
+      <button onClick={()=> setCount(count - 1)}>Decrease</button>
+    </div>
+  )
+}
+
+function Users() {
+  const [users, setUsers] = useState([]);
+  useEffect(()=> {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(res => res.json())
+      .then(data => setUsers(data))
+  },[])
+  return (
+    <div>
+      <h3>Dynamic Users {users.length}</h3>
+      <ul>
+        {
+          users.map(user => 
+            <div>
+              <li>{user.name}</li>
+              <p>{user.email}</p>
+            </div>  
+          )
+        }
+      </ul>
     </div>
   )
 }
